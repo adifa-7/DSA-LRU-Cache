@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.controls {
+    margin: 10px;
+}
+
+#cache {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.cache-item {
+    border: 2px solid black;
+    padding: 10px;
+    margin: 5px;
+    width: 60px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.hit {
+    background-color: #a8f0a5; /* green */
+}
+
+.miss {
+    background-color: #f7a8a8; /* red */
+}
+
+.evict {
+    background-color: #f3d17a; /* yellow */
+}
