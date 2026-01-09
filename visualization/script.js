@@ -2,62 +2,76 @@ let capacity = 0;
 let cache = new Map();
 
 function setCapacity() {
-    capacity = parseInt(document.getElementById("capacity").value);
-    cache.clear();
-    updateUI();
-    showMessage("Cache capacity set to " + capacity, "");
-}
-
-function get() {
-    const key = document.getElementById("key").value;
-
-    if (cache.has(key)) {
-        const value = cache.get(key);
-        cache.delete(key);
-        cache.set(key, value); // move to MRU
-        updateUI("hit", key);
-        showMessage("Cache HIT for key " + key, "hit");
-    } else {
-        updateUI("miss", key);
-        showMessage("Cache MISS for key " + key, "miss");
-    }
+  capacity = Number(document.getElementById("capacityInput").value);
+  cache.clear();
+  updateUI();
+  toast(`Cache capacity set to ${capacity}`);
 }
 
 function put() {
-    const key = document.getElementById("key").value;
-    const value = document.getElementById("value").value;
+  const key = document.getElementById("keyInput").value;
+  const value = document.getElementById("valueInput").value;
 
-    if (cache.has(key)) {
-        cache.delete(key);
-    } else if (cache.size === capacity) {
-        const lruKey = cache.keys().next().value;
-        cache.delete(lruKey);
-        showMessage("Evicted key " + lruKey, "evict");
-    }
+  if (key === "" || value === "") {
+    toast("Enter both key and value");
+    return;
+  }
 
-    cache.set(key, value);
-    updateUI();
+  if (cache.has(key)) {
+    cache.delete(key);
+    toast(`Updated key ${key}`);
+  } else if (cache.size >= capacity) {
+    const lruKey = cache.keys().next().value;
+    cache.delete(lruKey);
+    toast(`Evicted least used key ${lruKey}`);
+  } else {
+    toast(`Inserted key ${key}`);
+  }
+
+  cache.set(key, value);
+  updateUI();
 }
 
-function updateUI(type, highlightKey) {
-    const cacheDiv = document.getElementById("cache");
-    cacheDiv.innerHTML = "";
+function get() {
+  const key = document.getElementById("keyInput").value;
 
-    for (let [key, value] of Array.from(cache.entries()).reverse()) {
-        const div = document.createElement("div");
-        div.className = "cache-item";
+  if (!cache.has(key)) {
+    toast("Cache MISS – key not found");
+    return;
+  }
 
-        if (key === highlightKey && type) {
-            div.classList.add(type);
-        }
+  const value = cache.get(key);
+  cache.delete(key);
+  cache.set(key, value);
 
-        div.innerHTML = `<strong>${key}</strong><br>${value}`;
-        cacheDiv.appendChild(div);
-    }
+  toast(`Cache HIT – key ${key}`);
+  updateUI();
 }
 
-function showMessage(msg, type) {
-    const message = document.getElementById("message");
-    message.innerText = msg;
-    message.className = type;
+function updateUI() {
+  const container = document.getElementById("cacheContainer");
+  container.innerHTML = "";
+
+  const items = Array.from(cache).reverse();
+
+  items.forEach(([k, v], i) => {
+    const box = document.createElement("div");
+    box.className = "cache-box";
+
+    if (i === 0) box.classList.add("mru");
+    if (i === items.length - 1) box.classList.add("lru");
+
+    box.innerHTML = `<div>${k}</div><div>${v}</div>`;
+    container.appendChild(box);
+  });
+}
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.innerText = msg;
+  t.style.display = "block";
+
+  setTimeout(() => {
+    t.style.display = "none";
+  }, 2200);
 }

@@ -1,35 +1,137 @@
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+  margin: 0;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  min-height: 100vh;
 }
 
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 34px;
+}
+
+header p {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* MAIN */
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px 20px;
+}
+
+/* PANELS */
+.panel {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 22px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.panel h3 {
+  margin: 0 0 15px;
+  font-size: 18px;
+}
+
+/* CONTROLS */
 .controls {
-    margin: 10px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-#cache {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+input {
+  padding: 10px;
+  width: 140px;
+  border-radius: 8px;
+  border: 1px solid #cbd5f5;
 }
 
-.cache-item {
-    border: 2px solid black;
-    padding: 10px;
-    margin: 5px;
-    width: 60px;
-    text-align: center;
-    border-radius: 5px;
+button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #e5e7eb;
+  font-weight: 600;
 }
 
-.hit {
-    background-color: #a8f0a5; /* green */
+button.primary {
+  background: #2563eb;
+  color: white;
 }
 
-.miss {
-    background-color: #f7a8a8; /* red */
+/* CACHE BOXES */
+#cacheContainer {
+  display: flex;
+  gap: 18px;
+  margin-top: 10px;
+  flex-wrap: wrap;
 }
 
-.evict {
-    background-color: #f3d17a; /* yellow */
+.cache-box {
+  width: 90px;
+  height: 90px;
+  background: #f1f5f9;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 3px solid #64748b;
+  animation: slide 0.3s ease;
+}
+
+.cache-box.mru {
+  border-color: #22c55e;
+  background: #ecfdf5;
+}
+
+.cache-box.lru {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+/* TOAST MESSAGE */
+#toast {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f172a;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 12px;
+  display: none;
+  font-size: 14px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.35);
+}
+
+/* ANIMATION */
+@keyframes slide {
+  from {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
